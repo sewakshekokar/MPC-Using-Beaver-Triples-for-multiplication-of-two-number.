@@ -4,20 +4,24 @@ HOST = '127.0.0.1'
 PORT_P0 = 6000
 PORT_P1 = 6001
 
-# Beaver triple
-a = 6
-b = 3
-c = a * b
-
-# Shares of P0 and P1
-a0, a1 = 3, 3
-b0, b1 = 2, 1
-c0, c1 = 10, 8
 
 def send_json(conn, obj):
     conn.sendall(json.dumps(obj).encode())
 
+# Generate Beaver triple (a, b, c)
+a = random.randint(1, 1000)  # can be small or big
+b = random.randint(1, 1000)
+c = a * b
 print(f"[P2] Beaver triple: a={a}, b={b}, c={c}")
+
+# Split Beaver triple into shares
+a0 = random.randint(0, a)
+a1 = a - a0
+b0 = random.randint(0, b)
+b1 = b - b0
+c0 = random.randint(0, c)
+c1 = c - c0
+
 
 # Send to P0
 s0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

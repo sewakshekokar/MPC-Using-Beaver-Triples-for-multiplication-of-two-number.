@@ -4,10 +4,6 @@ HOST = '127.0.0.1'
 PORT_P1 = 6001  
 PORT_P0 = 6000  
 
-x1 = 4
-y1 = 2
-print("[P1] x1=",x1)
-print("[P1] y1=",y1)
 
 def recv_json(conn):
     return json.loads(conn.recv(1024).decode())
@@ -21,13 +17,21 @@ srv.bind((HOST, PORT_P1))
 srv.listen(5)
 print("[P1] Listening on", PORT_P1)
 
+# Receive x0, y0 from P3
+conn_p3, _ = srv.accept()
+vals = recv_json(conn_p3)
+x1 = vals['x1']
+y1 = vals['y1']
+print("[P1] x1=",x1)
+print("[P1] y1=",y1)
+conn_p3.close()
 
 # Receive Beaver triple from p2
 conn_p2, address = srv.accept()
-t = recv_json(conn_p2)
-a1 = t['a1']
-b1 = t['b1']
-c1 = t['c1']
+data = recv_json(conn_p2)
+a1 = data['a1']
+b1 = data['b1']
+c1 = data['c1']
 print("[P1] a1,b1,c1 =",a1,b1,c1)
 conn_p2.close()
 
